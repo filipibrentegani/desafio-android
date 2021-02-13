@@ -1,4 +1,4 @@
-package com.picpay.desafio.android
+package com.picpay.desafio.android.contacts.presentation
 
 import androidx.recyclerview.widget.DiffUtil
 import com.picpay.desafio.android.User

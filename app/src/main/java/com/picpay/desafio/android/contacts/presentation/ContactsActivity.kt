@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.picpay.desafio.android.R
-import com.picpay.desafio.android.UserListAdapter
 import com.picpay.desafio.android.databinding.ActivityContactsBinding
 
 class ContactsActivity : AppCompatActivity() {
@@ -24,7 +23,8 @@ class ContactsActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
 
-        adapter = UserListAdapter()
+        adapter =
+            UserListAdapter()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
