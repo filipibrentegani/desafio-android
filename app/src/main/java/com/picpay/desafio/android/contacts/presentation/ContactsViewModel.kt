@@ -2,6 +2,7 @@ package com.picpay.desafio.android.contacts.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.User
@@ -12,35 +13,33 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ContactsViewModel: ViewModel(), KoinComponent {
+class ContactsViewModel(private val savedStateHandle: SavedStateHandle): ViewModel(), KoinComponent {
     private val repository: ContactsRepository by inject()
 
-    private val contactsMutableLiveData = MutableLiveData<List<User>>()
-    val contactsLiveData: LiveData<List<User>> = contactsMutableLiveData
+    val contacts: LiveData<List<User>> = savedStateHandle.getLiveData("contacts")
 
-    private val showContactsMutableLiveData = MutableLiveData<Boolean>()
-    val showContactsLiveData: LiveData<Boolean> = showContactsMutableLiveData
+    val showContacts: LiveData<Boolean> = savedStateHandle.getLiveData("showContacts")
 
-    private val showLoadingMutableLiveData = MutableLiveData<Boolean>()
-    val showLoadingLiveData: LiveData<Boolean> = showLoadingMutableLiveData
+    val showLoading: LiveData<Boolean> = savedStateHandle.getLiveData("showLoading")
 
-    private val errorMutableLiveData = MutableLiveData<Int>()
-    val errorLoadingLiveData: LiveData<Int> = errorMutableLiveData
+    private val errorMLD = MutableLiveData<Int?>()
+    val showError: LiveData<Int?> = errorMLD
 
     fun getContactData() {
-        showLoadingMutableLiveData.value = true
-        showContactsMutableLiveData.value = false
+        savedStateHandle["showLoading"] = true
+        savedStateHandle["showContacts"] = false
+        errorMLD.value = null
         repository.getContacts(object : Callback<List<User>> {
             override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                showLoadingMutableLiveData.value = false
-                showContactsMutableLiveData.value = false
-                errorMutableLiveData.value = R.string.error
+                savedStateHandle["showLoading"] = false
+                savedStateHandle["showContacts"] = false
+                errorMLD.value = R.string.error
             }
 
             override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-                showLoadingMutableLiveData.value = false
-                showContactsMutableLiveData.value = true
-                contactsMutableLiveData.value = response.body()
+                savedStateHandle["showContacts"] = true
+                savedStateHandle["showLoading"] = false
+                savedStateHandle["contacts"] = response.body()
             }
         })
     }
