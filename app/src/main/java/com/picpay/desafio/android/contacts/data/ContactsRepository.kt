@@ -14,7 +14,7 @@ class ContactsRepository(
     private val connectivityUtils: ConnectivityUtils
 ): IContactsRepository {
 
-    override fun getContactsFlow(): LiveData<List<User>> {
+    override fun getContactsLiveData(): LiveData<List<User>> {
         return userDao.getAll()
     }
 
@@ -28,7 +28,7 @@ class ContactsRepository(
         try {
             response = service.getUsers()
         } catch (ex: Exception) {
-            Log.i("filipi", ex.toString())
+            Log.i("filipi", ex.toString()) //o tratamento de erros pode ser infinitamente melhorado
         }
 
         response?.let {

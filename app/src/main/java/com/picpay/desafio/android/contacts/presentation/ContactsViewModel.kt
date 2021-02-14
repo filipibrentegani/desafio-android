@@ -14,7 +14,7 @@ class ContactsViewModel(private val savedStateHandle: SavedStateHandle) : ViewMo
     KoinComponent {
     private val repository: IContactsRepository by inject()
 
-    val contacts: LiveData<List<User>> = repository.getContactsFlow()
+    val contacts: LiveData<List<User>> = repository.getContactsLiveData()
 
     val showLoading: LiveData<Boolean> = savedStateHandle.getLiveData(SHOW_LOADING)
 
