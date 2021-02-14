@@ -1,19 +1,17 @@
 package com.picpay.desafio.android.contacts.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.User
 import com.picpay.desafio.android.contacts.data.ContactsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class ContactsViewModel(private val savedStateHandle: SavedStateHandle): ViewModel(), KoinComponent {
+class ContactsViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(),
+    KoinComponent {
     private val repository: ContactsRepository by inject()
 
     val contacts: LiveData<List<User>> = savedStateHandle.getLiveData("contacts")
@@ -29,18 +27,20 @@ class ContactsViewModel(private val savedStateHandle: SavedStateHandle): ViewMod
         savedStateHandle["showLoading"] = true
         savedStateHandle["showContacts"] = false
         errorMLD.value = null
-        repository.getContacts(object : Callback<List<User>> {
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                savedStateHandle["showLoading"] = false
-                savedStateHandle["showContacts"] = false
-                errorMLD.value = R.string.error
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = repository.getContacts()
 
-            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-                savedStateHandle["showContacts"] = true
-                savedStateHandle["showLoading"] = false
-                savedStateHandle["contacts"] = response.body()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    savedStateHandle["showContacts"] = true
+                    savedStateHandle["showLoading"] = false
+                    savedStateHandle["contacts"] = response.body()
+                } else {
+                    savedStateHandle["showLoading"] = false
+                    savedStateHandle["showContacts"] = false
+                    errorMLD.value = R.string.error
+                }
             }
-        })
+        }
     }
 }
