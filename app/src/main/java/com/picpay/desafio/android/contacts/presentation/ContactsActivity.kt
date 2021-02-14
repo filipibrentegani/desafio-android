@@ -36,10 +36,9 @@ class ContactsActivity : AppCompatActivity() {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         })
+        binding.executePendingBindings()
         if (savedInstanceState == null) {
             viewModel.getContactData()
-        } else {
-            binding.executePendingBindings()
         }
     }
 
