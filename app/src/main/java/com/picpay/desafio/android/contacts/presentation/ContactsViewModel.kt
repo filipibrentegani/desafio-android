@@ -3,6 +3,7 @@ package com.picpay.desafio.android.contacts.presentation
 import androidx.lifecycle.*
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.User
+import com.picpay.desafio.android.contacts.domain.ContactsUseCase
 import com.picpay.desafio.android.contacts.domain.IContactsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,9 +13,9 @@ import org.koin.core.component.inject
 
 class ContactsViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(),
     KoinComponent {
-    private val repository: IContactsRepository by inject()
+    private val useCase: ContactsUseCase by inject()
 
-    val contacts: LiveData<List<User>> = repository.getContactsLiveData()
+    val contacts: LiveData<List<User>> = useCase.getContactsLiveData()
 
     val showLoading: LiveData<Boolean> = savedStateHandle.getLiveData(SHOW_LOADING)
 
@@ -25,7 +26,7 @@ class ContactsViewModel(private val savedStateHandle: SavedStateHandle) : ViewMo
         savedStateHandle[SHOW_LOADING] = true
         errorMLD.value = null
         viewModelScope.launch(Dispatchers.IO) {
-            val response = repository.updateCachedValues()
+            val response = useCase.updateCachedValues()
 
             withContext(Dispatchers.Main) {
                 savedStateHandle[SHOW_LOADING] = false

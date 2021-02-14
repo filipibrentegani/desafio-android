@@ -2,6 +2,7 @@ package com.picpay.desafio.android.application
 
 import android.app.Application
 import com.picpay.desafio.android.contacts.data.di.contactsDataModule
+import com.picpay.desafio.android.contacts.domain.di.domainModule
 import com.picpay.desafio.android.contacts.presentation.di.contactsPresentationModule
 import com.picpay.desafio.android.utils.di.utilsModule
 import org.koin.android.ext.koin.androidContext
@@ -15,7 +16,7 @@ class ContactsApplication: Application() {
         startKoin {
             androidContext(this@ContactsApplication)
 
-            modules(listOf(contactsDataModule, contactsPresentationModule, utilsModule))
+            modules(listOf(contactsDataModule, contactsPresentationModule, domainModule, utilsModule))
         }
     }
 }
