@@ -1,40 +1,33 @@
 package com.picpay.desafio.android.contacts.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.picpay.desafio.android.User
 import com.picpay.desafio.android.contacts.domain.IContactsRepository
-import com.picpay.desafio.android.utils.ConnectivityUtils
-import retrofit2.Response
-import java.lang.Exception
+import com.picpay.desafio.android.network.ResultWrapper
+import kotlin.Exception
 
 class ContactsRepository(
     private val service: PicPayService,
-    private val userDao: UserDao,
-    private val connectivityUtils: ConnectivityUtils
+    private val userDao: UserDao
 ): IContactsRepository {
 
     override fun getContactsLiveData(): LiveData<List<User>> {
         return userDao.getAll()
     }
 
-    override suspend fun updateCachedValues(): Response<List<User>>? {
-        var response: Response<List<User>>? = null
+    override suspend fun updateCachedValues(): ResultWrapper<List<User>, Exception> {
+        var users: List<User>? = null
 
-        if (!connectivityUtils.hasConnectivity()) {
-            return null
-        }
-
-        try {
-            response = service.getUsers()
+        val resultWrapper = try {
+            users = service.getUsers()
+            ResultWrapper.Success<List<User>, Exception>(users)
         } catch (ex: Exception) {
-            Log.i("filipi", ex.toString()) //o tratamento de erros pode ser infinitamente melhorado
+            ResultWrapper.Error<List<User>, Exception>(ex)
         }
 
-        response?.let {
-            userDao.insertAll(it.body() ?: listOf())
-            return it
+        users?.let {
+            userDao.insertAll(it)
         }
-        return null
+        return resultWrapper
     }
 }

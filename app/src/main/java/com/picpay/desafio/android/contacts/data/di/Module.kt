@@ -16,7 +16,7 @@ val contactsDataModule = module {
     }
 
     factory {
-        ContactsRepository(get(), get(), get())
+        ContactsRepository(get(), get())
     } binds arrayOf(IContactsRepository::class, ContactsRepository::class) //para o Koin aceitar a injeção nos 2 tipos
 
     single {
