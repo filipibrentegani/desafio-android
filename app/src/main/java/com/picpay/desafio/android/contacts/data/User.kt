@@ -1,4 +1,4 @@
-package com.picpay.desafio.android
+package com.picpay.desafio.android.contacts.data
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

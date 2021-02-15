@@ -3,7 +3,7 @@ package com.picpay.desafio.android.contacts.presentation
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.picpay.desafio.android.User
+import com.picpay.desafio.android.contacts.data.User
 
 class UserListAdapter : RecyclerView.Adapter<UserListItemViewHolder>() {
 

@@ -1,7 +1,7 @@
 package com.picpay.desafio.android.contacts.presentation
 
 import androidx.recyclerview.widget.DiffUtil
-import com.picpay.desafio.android.User
+import com.picpay.desafio.android.contacts.data.User
 
 class UserListDiffCallback(
     private val oldList: List<User>,

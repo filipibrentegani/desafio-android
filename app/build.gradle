@@ -87,9 +87,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
 
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
-    configurations {
-        debugImplementation.exclude group: "junit", module: "junit"
-    }
+
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"

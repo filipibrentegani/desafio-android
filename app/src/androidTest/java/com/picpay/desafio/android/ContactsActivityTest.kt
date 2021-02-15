@@ -8,10 +8,13 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.picpay.desafio.android.contacts.presentation.ContactsActivity
+import kotlinx.coroutines.delay
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 
 
@@ -20,6 +23,16 @@ class ContactsActivityTest {
     private val server = MockWebServer()
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
+
+    @Before
+    fun setUp() {
+
+    }
+
+    @After
+        fun () {
+
+    }
 
     @Test
     fun shouldDisplayTitle() {

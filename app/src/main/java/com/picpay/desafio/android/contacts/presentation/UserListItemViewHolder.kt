@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.R
-import com.picpay.desafio.android.User
+import com.picpay.desafio.android.contacts.data.User
 import com.picpay.desafio.android.databinding.ListItemUserBinding
 import com.picpay.desafio.android.ui.setTextOrGone
 import com.squareup.picasso.Callback

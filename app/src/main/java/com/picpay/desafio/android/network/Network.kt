@@ -6,7 +6,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-private const val url = "http://careers.picpay.com/tests/mobdev/"
+var url = "http://careers.picpay.com/tests/mobdev/"
 
 private val gson: Gson by lazy { GsonBuilder().create() }
 

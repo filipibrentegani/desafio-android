@@ -1,13 +1,15 @@
 package com.picpay.desafio.android.contacts.presentation
 
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import com.picpay.desafio.android.R
-import com.picpay.desafio.android.User
+import com.picpay.desafio.android.contacts.data.User
 import com.picpay.desafio.android.contacts.domain.ContactsUseCase
 import com.picpay.desafio.android.network.ResultWrapper
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.picpay.desafio.android.ui.ioJob
+import com.picpay.desafio.android.ui.ui
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -26,18 +28,17 @@ class ContactsViewModel(private val savedStateHandle: SavedStateHandle) : ViewMo
     fun getContactData() {
         savedStateHandle[SHOW_LOADING] = true
         errorMLD.value = null
-        viewModelScope.launch(Dispatchers.IO) {
+        ioJob {
             val resultWrapper = useCase.updateCachedValues()
 
-            withContext(Dispatchers.Main) {
+            withContext(ui) {
                 savedStateHandle[SHOW_LOADING] = false
-                when(resultWrapper) {
+                when (resultWrapper) {
                     is ResultWrapper.Success -> {
                         //nothing to do
                     }
                     is ResultWrapper.Error -> {
                         showError()
-                        Log.i("ContactsViewModel", resultWrapper.errorValue?.stackTrace.toString())
                     }
                 }
             }

@@ -2,7 +2,7 @@ package com.picpay.desafio.android.contacts.domain
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.picpay.desafio.android.User
+import com.picpay.desafio.android.contacts.data.User
 import com.picpay.desafio.android.network.ResultWrapper
 
 class ContactsUseCase(private val repository: IContactsRepository) {
@@ -14,7 +14,7 @@ class ContactsUseCase(private val repository: IContactsRepository) {
         //que tivermos deve estar nessa classe
     }
 
-    suspend fun updateCachedValues() : ResultWrapper<List<User>, Exception> {
+    suspend fun updateCachedValues(): ResultWrapper<List<User>, Exception> {
         return repository.updateCachedValues()
     }
 }

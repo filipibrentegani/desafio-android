@@ -1,7 +1,6 @@
 package com.picpay.desafio.android.contacts.data
 
 import androidx.lifecycle.LiveData
-import com.picpay.desafio.android.User
 import com.picpay.desafio.android.contacts.domain.IContactsRepository
 import com.picpay.desafio.android.network.ResultWrapper
 import kotlin.Exception
